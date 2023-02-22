@@ -39,7 +39,7 @@ namespace RazorPages.Services
         }
         public IEnumerable<Employee> GetAllEmployees()
         {
-            
+            return _employeeList;
         }
     }
 }
