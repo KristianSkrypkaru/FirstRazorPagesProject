@@ -34,6 +34,10 @@ namespace RazorPages.Services
                 new Employee()
                 {
                     Id = 5, Name = "Manuel", Email = "manuel@example.com", PhotoPath = "ava1.png", Deprtment = Deprtment.IT
+                },
+                new Employee()
+                {
+                    Id = 6, Name = "Justin", Email = "justinl@example.com", Deprtment = Deprtment.IT
                 }
             };
         }
