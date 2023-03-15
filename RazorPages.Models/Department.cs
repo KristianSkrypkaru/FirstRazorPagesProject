@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace RazorPages.Models
 {
-    public enum Deprtment
+    public enum Department
     {
         None, 
         HR,
