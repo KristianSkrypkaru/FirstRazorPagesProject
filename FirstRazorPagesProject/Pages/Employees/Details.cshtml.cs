@@ -16,9 +16,14 @@ namespace FirstRazorPagesProject.Pages.Employees
 
         public Employee Employee { get; private set; }
 
-        public void OnGet(int id)
+        public IActionResult OnGet(int id)
         {
             Employee = _emloyeeRepository.GetEmployee(id);
+
+            if (Employee == null)
+                return RedirectToPage("/NotFound");
+            
+            return Page();
         }
     }
 }
