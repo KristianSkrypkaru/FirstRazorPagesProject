@@ -1,11 +1,35 @@
-﻿@page
+﻿@page "{id}/{handler?}"
 @model FirstRazorPagesProject.Pages.Employees.EditModel
 @{
     ViewData["Title"] = "Edit";
     var photoPath = $"/images/{Model.Employee.PhotoPath ?? "notphoto.png"}";
 }
+
+<form method="post" asp-page-handler="UpdateNotificationPreferences">
+    <div class="row text-center notifyBlock">
+        <div class="form-check">
+            <h1>Notification Peference</h1>
+            <input asp-for="Notify" class="form-check-input" />
+            <label asp-for="Notify" class="form-check-label">
+                Receive email notifaction where my details change
+            </label> 
+            <br />
+            <button type="submit" class="btn btn-primary text-center">Update Notification Preference</button>
+
+            @if (!string.IsNullOrWhiteSpace(Model.Message))
+            {
+                <div class="alert alert-success">
+                    <p class="p-3 mt-2">@Model.Message</p>
+                </div>
+            }
+
+        </div>
+    </div>
+</form>
+<hr />
+
 <!--Creating an edit form-->
-<form method="post" class="mt-3" enctype="multipart/form-data">
+<form method="post" asp-page-handler="OnPost" class="mt-3" enctype="multipart/form-data" >
     <!--Create a hidden field for the ID parameter-->
     <input type="hidden" asp-for="Employee.Id" />
     <input type="hidden" asp-for="Employee.PhotoPath" />

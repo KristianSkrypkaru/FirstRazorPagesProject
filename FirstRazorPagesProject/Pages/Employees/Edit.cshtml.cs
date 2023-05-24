@@ -17,7 +17,12 @@ namespace FirstRazorPagesProject.Pages.Employees
         }
         public Employee Employee { get; set; }
         [BindProperty]
-        public IFormFile Photo { get; set; }
+        public IFormFile ?Photo { get; set; }
+
+        [BindProperty]
+        public bool Notify { get; set; }
+        public string? Message{ get; set; }
+
         public IActionResult OnGet(int id)
         {
             Employee = _emloyeeRepository.GetEmployee(id);
@@ -40,7 +45,20 @@ namespace FirstRazorPagesProject.Pages.Employees
                 employee.PhotoPath = ProcessUploadedFiel();
             }
             Employee = _emloyeeRepository.Udate(employee);
+
+            TempData["SeccessMessage"] = $"Udate {Employee.Name} successfull!";
+
             return RedirectToPage("Employees");
+        }
+
+        public void OnPostUpdateNotificationPreferences(int id)
+        {
+            if (Notify)
+                Message = "Thank you for turning on notifications";
+            else
+                Message = "You have torned off emailNotifications";
+            
+            Employee = _emloyeeRepository.GetEmployee(id);
         }
 
         private string ProcessUploadedFiel()
