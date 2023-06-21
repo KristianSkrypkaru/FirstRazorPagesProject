@@ -1,8 +1,10 @@
-﻿@page "{id}/{handler?}"
+﻿@page "{id:min(1)?}/{handler?}"
 @model FirstRazorPagesProject.Pages.Employees.EditModel
 @{
-    ViewData["Title"] = "Edit";
     var photoPath = $"/images/{Model.Employee.PhotoPath ?? "notphoto.png"}";
+
+    var pageTitle = Model.Employee.Id > 0 ? "Edit" : "Create";
+    ViewData["Title"] = pageTitle;
 }
 
 <form method="post" asp-page-handler="UpdateNotificationPreferences">
@@ -28,6 +30,7 @@
 </form>
 <hr />
 
+<div asp-validation-summary="All" class="text-danger text-center"></div>
 <!--Creating an edit form-->
 <form method="post" asp-page-handler="OnPost" class="mt-3" enctype="multipart/form-data" >
     <!--Create a hidden field for the ID parameter-->

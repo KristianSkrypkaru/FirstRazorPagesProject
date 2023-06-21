@@ -24,9 +24,12 @@ namespace FirstRazorPagesProject.Pages.Employees
         public bool Notify { get; set; }
         public string? Message{ get; set; }
 
-        public IActionResult OnGet(int id)
+        public IActionResult OnGet(int? id)
         {
-            Employee = _emloyeeRepository.GetEmployee(id);
+            if(id.HasValue)
+                Employee = _emloyeeRepository.GetEmployee(id.Value);
+            else
+                Employee = new Employee();
 
             if (Employee == null)
                 return RedirectToPage("/NotFound");
@@ -47,9 +50,17 @@ namespace FirstRazorPagesProject.Pages.Employees
 
                     Employee.PhotoPath = ProcessUploadedFiel();
                 }
-                Employee = _emloyeeRepository.Udate(Employee);
+                if (Employee.Id > 0)
+                {
+                    Employee = _emloyeeRepository.Udate(Employee);
+                    TempData["SeccessMessage"] = $"Udate {Employee.Name} successfull!";
 
-                TempData["SeccessMessage"] = $"Udate {Employee.Name} successfull!";
+                }
+                else
+                {
+                    Employee = _emloyeeRepository.Add(Employee);
+                    TempData["SeccessMessage"] = $"Adding {Employee.Name} successfull!";
+                }
                 return RedirectToPage("Employees");
             }
                 return Page(); 
