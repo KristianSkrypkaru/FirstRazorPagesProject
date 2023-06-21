@@ -15,6 +15,7 @@ namespace FirstRazorPagesProject.Pages.Employees
             _emloyeeRepository = emloyeeRepository;
             _webHostEnvironment = webHostEnvironment;
         }
+        [BindProperty]
         public Employee Employee { get; set; }
         [BindProperty]
         public IFormFile ?Photo { get; set; }
@@ -32,23 +33,26 @@ namespace FirstRazorPagesProject.Pages.Employees
             
             return Page();
         }
-        public IActionResult OnPost(Employee employee) 
+        public IActionResult OnPost() 
         {
-            if (Photo != null)
+            if (ModelState.IsValid)
             {
-                if (employee.PhotoPath != null)
+                if (Photo != null)
                 {
-                    string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", employee.PhotoPath);
-                    System.IO.File.Delete(filePath);
+                    if (Employee.PhotoPath != null)
+                    {
+                        string filePath = Path.Combine(_webHostEnvironment.WebRootPath, "images", Employee.PhotoPath);
+                        System.IO.File.Delete(filePath);
+                    }
+
+                    Employee.PhotoPath = ProcessUploadedFiel();
                 }
+                Employee = _emloyeeRepository.Udate(Employee);
 
-                employee.PhotoPath = ProcessUploadedFiel();
+                TempData["SeccessMessage"] = $"Udate {Employee.Name} successfull!";
+                return RedirectToPage("Employees");
             }
-            Employee = _emloyeeRepository.Udate(employee);
-
-            TempData["SeccessMessage"] = $"Udate {Employee.Name} successfull!";
-
-            return RedirectToPage("Employees");
+                return Page(); 
         }
 
         public void OnPostUpdateNotificationPreferences(int id)
